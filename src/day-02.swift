@@ -1,5 +1,4 @@
 struct Day02: Day {
-
     static var day = 02
     var data: String
 
@@ -23,16 +22,12 @@ struct Report {
 
     var isSafe: Bool {
         let isIncreasing = levels[1] > levels[0]
-
-        for i in 1..<levels.count {
-            let diff = abs(levels[i] - levels[i - 1])
+        for (a, b) in toPairs() {
+            let diff = abs(a - b)
             let diffOutOfRange = !(1...3).contains(diff)
-            let violatesOrder =
-                (isIncreasing && levels[i] < levels[i - 1])
-                || (!isIncreasing && levels[i] > levels[i - 1])
-            if diffOutOfRange || violatesOrder {
-                return false
-            }
+            let violatesOrder = (isIncreasing && b < a) || (!isIncreasing && b > a)
+
+            if diffOutOfRange || violatesOrder { return false }
         }
         return true
     }
@@ -42,10 +37,16 @@ struct Report {
         for i in 0..<levels.count {
             var dampened = levels
             dampened.remove(at: i)
-            if Report(levels: dampened).isSafe {
-                return true
-            }
+            if Report(levels: dampened).isSafe { return true }
         }
         return false
+    }
+
+    func toPairs() -> [(Int, Int)] {
+        var pairs = [(Int, Int)]()
+        for i in 0..<levels.count - 1 {
+            pairs.append((levels[i], levels[i + 1]))
+        }
+        return pairs
     }
 }
