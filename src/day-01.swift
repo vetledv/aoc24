@@ -19,13 +19,12 @@ struct Day01: Day {
     }
 
     private func parse(_ data: String) -> ([Int], [Int]) {
-        let ints: [(Int, Int)] = data.split(whereSeparator: \.isNewline)
-            .compactMap { line in
-                let comps = line.split(whereSeparator: \.isWhitespace)
-                guard let first = Int(comps[0]), let second = Int(comps[1])
-                else { return nil }
-                return (first, second)
-            }
+        let ints: [(Int, Int)] = data.lines.compactMap { line in
+            let comps = line.split(whereSeparator: \.isWhitespace)
+            guard let first = Int(comps[0]), let second = Int(comps[1])
+            else { return nil }
+            return (first, second)
+        }
         return (ints.map { $0.0 }, ints.map { $0.1 })
     }
 }

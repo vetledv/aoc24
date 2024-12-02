@@ -18,7 +18,7 @@ struct Main {
     }
 
     private static let days: [Day.Type] = [
-        Day01.self
+        Day01.self, Day02.self,
     ]
 }
 
