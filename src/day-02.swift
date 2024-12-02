@@ -7,7 +7,7 @@ struct Day02: Day {
 
     init(data: String) {
         self.data = Self.loadData(Self.day)
-        reports = data.lines.compactMap { Report(data: $0.lineToInts()) }
+        reports = data.lines.compactMap { Report(levels: $0.lineToInts()) }
     }
 
     func part1() -> Any {
@@ -15,28 +15,37 @@ struct Day02: Day {
     }
 
     func part2() -> Any {
-        return ""
+        return reports.filter { $0.isSafeWithDampener }.count
     }
 }
 struct Report {
-    let data: [Int]
+    let levels: [Int]
 
     var isSafe: Bool {
-        for i in 0..<data.count - 1 {
-            let diff = abs(data[i] - data[i + 1])
-            if !(1...3).contains(diff) { return false }
-        }
-        let inc = data[0] < data[1]
-        let dec = inc == false
-        for i in 1..<data.count {
-            if inc && data[i] < data[i - 1] {
-                return false
-            } else if dec && data[i] > data[i - 1] {
+        let isIncreasing = levels[1] > levels[0]
+
+        for i in 1..<levels.count {
+            let diff = abs(levels[i] - levels[i - 1])
+            let diffOutOfRange = !(1...3).contains(diff)
+            let violatesOrder =
+                (isIncreasing && levels[i] < levels[i - 1])
+                || (!isIncreasing && levels[i] > levels[i - 1])
+            if diffOutOfRange || violatesOrder {
                 return false
             }
         }
         return true
     }
 
-
+    var isSafeWithDampener: Bool {
+        if isSafe { return true }
+        for i in 0..<levels.count {
+            var dampened = levels
+            dampened.remove(at: i)
+            if Report(levels: dampened).isSafe {
+                return true
+            }
+        }
+        return false
+    }
 }
