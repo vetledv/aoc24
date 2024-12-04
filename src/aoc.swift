@@ -1,6 +1,7 @@
 import Foundation
 
 @main
+@MainActor
 struct Main {
     static func main() async {
         let arguments = CommandLine.arguments
@@ -18,7 +19,7 @@ struct Main {
     }
 
     private static let days: [Day.Type] = [
-        Day01.self, Day02.self,
+        Day01.self, Day02.self, Day03.self
     ]
 }
 
@@ -48,7 +49,9 @@ extension Day {
             withExtension: "txt",
             subdirectory: "data"
         )
-        guard let url = url, let data = try? String(contentsOf: url) else { fatalError() }
+        guard let url = url, let data = try? String(contentsOf: url, encoding: .utf8) else {
+            fatalError()
+        }
         return data
     }
 

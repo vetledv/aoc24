@@ -1,5 +1,5 @@
 struct Day01: Day {
-    static var day = 01
+    static let day = 01
     var data: String
 
     func part1() -> Any {

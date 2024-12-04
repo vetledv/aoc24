@@ -1,5 +1,7 @@
+import Algorithms
+
 struct Day02: Day {
-    static var day = 02
+    static let day = 02
     var data: String
 
     private let reports: [Report]
@@ -22,9 +24,10 @@ struct Report {
 
     var isSafe: Bool {
         let isIncreasing = levels[1] > levels[0]
-        for (a, b) in toPairs() {
+        for (a, b) in levels.adjacentPairs() {
+        let seq = 1...3
             let diff = abs(a - b)
-            let diffOutOfRange = !(1...3).contains(diff)
+            let diffOutOfRange = !(seq ~= diff)
             let violatesOrder = (isIncreasing && b < a) || (!isIncreasing && b > a)
 
             if diffOutOfRange || violatesOrder { return false }
@@ -33,6 +36,7 @@ struct Report {
     }
 
     var isSafeWithDampener: Bool {
+
         if isSafe { return true }
         for i in 0..<levels.count {
             var dampened = levels
@@ -40,13 +44,5 @@ struct Report {
             if Report(levels: dampened).isSafe { return true }
         }
         return false
-    }
-
-    func toPairs() -> [(Int, Int)] {
-        var pairs = [(Int, Int)]()
-        for i in 0..<levels.count - 1 {
-            pairs.append((levels[i], levels[i + 1]))
-        }
-        return pairs
     }
 }
