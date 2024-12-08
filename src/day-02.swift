@@ -25,7 +25,7 @@ struct Report {
     var isSafe: Bool {
         let isIncreasing = levels[1] > levels[0]
         for (a, b) in levels.adjacentPairs() {
-        let seq = 1...3
+            let seq = 1...3
             let diff = abs(a - b)
             let diffOutOfRange = !(seq ~= diff)
             let violatesOrder = (isIncreasing && b < a) || (!isIncreasing && b > a)
