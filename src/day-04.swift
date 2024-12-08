@@ -30,24 +30,22 @@ struct Day04: Day {
     }
 
     func part2() -> Any {
+        let allowedPatterns: Set = ["MAS", "SAM"]
         var count = 0
         for y in 0..<grid.count {
             for x in 0..<grid[y].count {
                 guard tryGetChar(arr: grid, pos: (x, y)) == "A" else {
                     continue
                 }
-                let ul = tryGetChar(arr: grid, pos: (x - 1, y - 1))
-                let ur = tryGetChar(arr: grid, pos: (x + 1, y - 1))
-                let bl = tryGetChar(arr: grid, pos: (x - 1, y + 1))
-                let br = tryGetChar(arr: grid, pos: (x + 1, y + 1))
+                let ul = tryGetChar(arr: grid, pos: (x - 1, y - 1)) ?? " "
+                let ur = tryGetChar(arr: grid, pos: (x + 1, y - 1)) ?? " "
+                let dl = tryGetChar(arr: grid, pos: (x - 1, y + 1)) ?? " "
+                let dr = tryGetChar(arr: grid, pos: (x + 1, y + 1)) ?? " "
 
-                let drMas = ul == "M" && br == "S"
-                let dlMas = ur == "M" && bl == "S"
-                let urMas = ul == "S" && br == "M"
-                let ulMas = ur == "S" && bl == "M"
+                let first = String("\(ul)A\(dr)")
+                let second = String("\(ur)A\(dl)")
 
-                let trueAmount = [drMas, urMas, dlMas, ulMas].filter { $0 }.count
-                if trueAmount == 2 {
+                if allowedPatterns.contains(first) && allowedPatterns.contains(second) {
                     count += 1
                 }
             }
