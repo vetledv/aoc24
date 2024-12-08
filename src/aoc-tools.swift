@@ -9,3 +9,8 @@ extension String {
         }
     }
 }
+extension Array where Element == String {
+    func toIntArray() -> [Int] {
+        return compactMap { Int($0) }
+    }
+}
