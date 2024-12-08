@@ -8,7 +8,6 @@ struct Day04: Day {
         (-1, -1), (1, -1),
         (-1, 1), (1, 1),
     ]
-    private let searchWord = "XMAS"
     private let grid: [[Character]]
 
     init(data: String) {
@@ -21,7 +20,7 @@ struct Day04: Day {
         for y in 0..<grid.count {
             for x in 0..<grid[y].count {
                 for (dx, dy) in directions {
-                    if findWord(searchWord, in: grid, at: (x, y), dir: (dx, dy)) {
+                    if findWord("XMAS", in: grid, at: (x, y), dir: (dx, dy)) {
                         count += 1
                     }
                 }
@@ -31,7 +30,29 @@ struct Day04: Day {
     }
 
     func part2() -> Any {
-        return "world"
+        var count = 0
+        for y in 0..<grid.count {
+            for x in 0..<grid[y].count {
+                guard tryGetChar(arr: grid, pos: (x, y)) == "A" else {
+                    continue
+                }
+                let ul = tryGetChar(arr: grid, pos: (x - 1, y - 1))
+                let ur = tryGetChar(arr: grid, pos: (x + 1, y - 1))
+                let bl = tryGetChar(arr: grid, pos: (x - 1, y + 1))
+                let br = tryGetChar(arr: grid, pos: (x + 1, y + 1))
+
+                let drMas = ul == "M" && br == "S"
+                let dlMas = ur == "M" && bl == "S"
+                let urMas = ul == "S" && br == "M"
+                let ulMas = ur == "S" && bl == "M"
+
+                let trueAmount = [drMas, urMas, dlMas, ulMas].filter { $0 }.count
+                if trueAmount == 2 {
+                    count += 1
+                }
+            }
+        }
+        return count
     }
 
     func findWord(
